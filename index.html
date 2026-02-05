@@ -4,47 +4,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Integer Subtraction Flashcards</title>
 </head>
-<body style="font-family:sans-serif;text-align:center;margin-top:40px;">
+
+<body style="font-family:sans-serif; text-align:center; margin-top:40px;">
 
 <h2>Integer Subtraction Practice</h2>
 
-<p id="question" style="font-size:22px;"></p>
+<p id="question" style="font-size:24px; font-weight:bold;"></p>
 
-<input type="number" id="answer" placeholder="Enter answer">
-<br><br>
-<button onclick="checkAnswer()">Submit</button>
-<button onclick="generateQuestion()">Next</button>
+<div id="choices"></div>
 
-<p id="result" style="font-weight:bold;"></p>
+<p id="result" style="font-weight:bold; margin-top:20px;"></p>
+<p>Score: <span id="score">0</span></p>
 
 <script>
-let num1, num2;
+
+let num1, num2, correctAnswer;
+let score = 0;
 
 function generateQuestion() {
-    num1 = Math.floor(Math.random() * 21) - 10;
-    num2 = Math.floor(Math.random() * 21) - 10;
+    num1 = Math.floor(Math.random() * 101) - 50;   // -50 to 50
+    num2 = Math.floor(Math.random() * 101) - 50;   // -50 to 50
+    correctAnswer = num1 - num2;
+
     document.getElementById("question").innerText =
         num1 + " - (" + num2 + ") = ?";
-    document.getElementById("answer").value = "";
-    document.getElementById("result").innerText = "";
+
+    generateChoices();
 }
 
-function checkAnswer() {
-    let input = document.getElementById("answer").value;
-    if (input === "") {
-        document.getElementById("result").innerText = "Enter an answer.";
-        return;
+function generateChoices() {
+    let choicesDiv = document.getElementById("choices");
+    choicesDiv.innerHTML = "";
+
+    let answers = [correctAnswer];
+
+    // Generate 3 wrong answers
+    while (answers.length < 4) {
+        let wrong = correctAnswer + Math.floor(Math.random() * 21) - 10;
+        if (!answers.includes(wrong)) {
+            answers.push(wrong);
+        }
     }
-    let correct = num1 - num2;
-    if (Number(input) === correct) {
+
+    // Shuffle answers
+    answers.sort(() => Math.random() - 0.5);
+
+    // Create buttons
+    answers.forEach(answer => {
+        let button = document.createElement("button");
+        button.innerText = answer;
+        button.style.margin = "10px";
+        button.style.padding = "10px 20px";
+        button.onclick = function() {
+            checkAnswer(answer);
+        };
+        choicesDiv.appendChild(button);
+    });
+}
+
+function checkAnswer(selected) {
+    if (selected === correctAnswer) {
         document.getElementById("result").innerText = "Correct!";
+        score++;
     } else {
         document.getElementById("result").innerText =
-            "Wrong! Answer: " + correct;
+            "Wrong! Correct answer: " + correctAnswer;
     }
+
+    document.getElementById("score").innerText = score;
+
+    setTimeout(generateQuestion, 1000);
 }
 
 generateQuestion();
+
 </script>
 
 </body>
