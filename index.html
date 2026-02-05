@@ -61,6 +61,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            outline: none;
         }
         
         button:hover {
@@ -71,6 +72,10 @@
         
         button:active {
             transform: translateY(0);
+        }
+        
+        button:focus {
+            background: #3b82f6;
         }
         
         #result {
@@ -126,7 +131,10 @@
             choices.forEach(choice => {
                 let btn = document.createElement("button");
                 btn.innerText = choice;
-                btn.onclick = () => checkAnswer(choice);
+                btn.onclick = function() {
+                    checkAnswer(choice);
+                    this.blur(); // Remove focus from button
+                };
                 choicesDiv.appendChild(btn);
             });
         }
