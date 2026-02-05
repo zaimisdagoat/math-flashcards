@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integer Subtraction Flashcards</title>
+</head>
+<body style="font-family:sans-serif;text-align:center;margin-top:40px;">
+
+<h2>Integer Subtraction Practice</h2>
+
+<p id="question" style="font-size:22px;"></p>
+
+<input type="number" id="answer" placeholder="Enter answer">
+<br><br>
+<button onclick="checkAnswer()">Submit</button>
+<button onclick="generateQuestion()">Next</button>
+
+<p id="result" style="font-weight:bold;"></p>
+
+<script>
+let num1, num2;
+
+function generateQuestion() {
+    num1 = Math.floor(Math.random() * 21) - 10;
+    num2 = Math.floor(Math.random() * 21) - 10;
+    document.getElementById("question").innerText =
+        num1 + " - (" + num2 + ") = ?";
+    document.getElementById("answer").value = "";
+    document.getElementById("result").innerText = "";
+}
+
+function checkAnswer() {
+    let input = document.getElementById("answer").value;
+    if (input === "") {
+        document.getElementById("result").innerText = "Enter an answer.";
+        return;
+    }
+    let correct = num1 - num2;
+    if (Number(input) === correct) {
+        document.getElementById("result").innerText = "Correct!";
+    } else {
+        document.getElementById("result").innerText =
+            "Wrong! Answer: " + correct;
+    }
+}
+
+generateQuestion();
+</script>
+
+</body>
+</html>
