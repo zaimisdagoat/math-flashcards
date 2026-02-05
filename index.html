@@ -3,33 +3,114 @@
 <head>
     <title>Integer Subtraction Flashcards</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        #question {
+            font-size: 36px;
+            text-align: center;
+            color: #333;
+            margin: 30px 0;
+            font-weight: bold;
+            min-height: 50px;
+        }
+        
+        #choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
         button {
-            display: block;
-            margin: 10px 0;
-            padding: 10px 20px;
-            font-size: 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 24px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #result {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            min-height: 30px;
+            margin-top: 20px;
+        }
+        
+        .correct {
+            color: #10b981;
+        }
+        
+        .wrong {
+            color: #ef4444;
         }
     </style>
 </head>
 <body>
-    <h2>Integer Subtraction Practice</h2>
-    <p id="question"></p>
-    <div id="choices"></div>
-    <p id="result"></p>
+    <div class="container">
+        <h2>Integer Subtraction Practice</h2>
+        <p id="question"></p>
+        <div id="choices"></div>
+        <p id="result"></p>
+    </div>
+    
     <script>
         let correctAnswer;
         
         function generateQuestion() {
-            let num1 = Math.floor(Math.random() * 21) - 10;  // -10 to 10
-            let num2 = Math.floor(Math.random() * 21) - 10;  // -10 to 10
+            let num1 = Math.floor(Math.random() * 21) - 10;
+            let num2 = Math.floor(Math.random() * 21) - 10;
             correctAnswer = num1 - num2;
             
             document.getElementById("question").innerText = 
                 num1 + " - (" + num2 + ") = ?";
             document.getElementById("result").innerText = "";
+            document.getElementById("result").className = "";
             
-            // Generate 3 wrong answers
             let choices = [correctAnswer];
             while (choices.length < 4) {
                 let wrong = correctAnswer + Math.floor(Math.random() * 11) - 5;
@@ -38,10 +119,8 @@
                 }
             }
             
-            // Shuffle choices
             choices.sort(() => Math.random() - 0.5);
             
-            // Display choices as buttons
             let choicesDiv = document.getElementById("choices");
             choicesDiv.innerHTML = "";
             choices.forEach(choice => {
@@ -53,11 +132,13 @@
         }
         
         function checkAnswer(userAnswer) {
+            let resultElem = document.getElementById("result");
             if (userAnswer === correctAnswer) {
-                document.getElementById("result").innerText = "Correct!";
+                resultElem.innerText = "✓ Correct!";
+                resultElem.className = "correct";
             } else {
-                document.getElementById("result").innerText = 
-                    "Wrong! Correct answer is " + correctAnswer;
+                resultElem.innerText = "✗ Wrong! Answer: " + correctAnswer;
+                resultElem.className = "wrong";
             }
             setTimeout(generateQuestion, 1500);
         }
