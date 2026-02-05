@@ -1,84 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Integer Subtraction Flashcards</title>
-</head>
-
-<body style="font-family:sans-serif; text-align:center; margin-top:40px;">
-
-<h2>Integer Subtraction Practice</h2>
-
-<p id="question" style="font-size:24px; font-weight:bold;"></p>
-
-<div id="choices"></div>
-
-<p id="result" style="font-weight:bold; margin-top:20px;"></p>
-<p>Score: <span id="score">0</span></p>
-
-<script>
-
-let num1, num2, correctAnswer;
-let score = 0;
-
-function generateQuestion() {
-    num1 = Math.floor(Math.random() * 101) - 50;   // -50 to 50
-    num2 = Math.floor(Math.random() * 101) - 50;   // -50 to 50
-    correctAnswer = num1 - num2;
-
-    document.getElementById("question").innerText =
-        num1 + " - (" + num2 + ") = ?";
-
-    generateChoices();
-}
-
-function generateChoices() {
-    let choicesDiv = document.getElementById("choices");
-    choicesDiv.innerHTML = "";
-
-    let answers = [correctAnswer];
-
-    // Generate 3 wrong answers
-    while (answers.length < 4) {
-        let wrong = correctAnswer + Math.floor(Math.random() * 21) - 10;
-        if (!answers.includes(wrong)) {
-            answers.push(wrong);
+    <title>Integer Subtraction Flashcards</title>
+    <style>
+        button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
-    }
-
-    // Shuffle answers
-    answers.sort(() => Math.random() - 0.5);
-
-    // Create buttons
-    answers.forEach(answer => {
-        let button = document.createElement("button");
-        button.innerText = answer;
-        button.style.margin = "10px";
-        button.style.padding = "10px 20px";
-        button.onclick = function() {
-            checkAnswer(answer);
-        };
-        choicesDiv.appendChild(button);
-    });
-}
-
-function checkAnswer(selected) {
-    if (selected === correctAnswer) {
-        document.getElementById("result").innerText = "Correct!";
-        score++;
-    } else {
-        document.getElementById("result").innerText =
-            "Wrong! Correct answer: " + correctAnswer;
-    }
-
-    document.getElementById("score").innerText = score;
-
-    setTimeout(generateQuestion, 1000);
-}
-
-generateQuestion();
-
-</script>
-
+    </style>
+</head>
+<body>
+    <h2>Integer Subtraction Practice</h2>
+    <p id="question"></p>
+    <div id="choices"></div>
+    <p id="result"></p>
+    <script>
+        let correctAnswer;
+        
+        function generateQuestion() {
+            let num1 = Math.floor(Math.random() * 21) - 10;  // -10 to 10
+            let num2 = Math.floor(Math.random() * 21) - 10;  // -10 to 10
+            correctAnswer = num1 - num2;
+            
+            document.getElementById("question").innerText = 
+                num1 + " - (" + num2 + ") = ?";
+            document.getElementById("result").innerText = "";
+            
+            // Generate 3 wrong answers
+            let choices = [correctAnswer];
+            while (choices.length < 4) {
+                let wrong = correctAnswer + Math.floor(Math.random() * 11) - 5;
+                if (!choices.includes(wrong)) {
+                    choices.push(wrong);
+                }
+            }
+            
+            // Shuffle choices
+            choices.sort(() => Math.random() - 0.5);
+            
+            // Display choices as buttons
+            let choicesDiv = document.getElementById("choices");
+            choicesDiv.innerHTML = "";
+            choices.forEach(choice => {
+                let btn = document.createElement("button");
+                btn.innerText = choice;
+                btn.onclick = () => checkAnswer(choice);
+                choicesDiv.appendChild(btn);
+            });
+        }
+        
+        function checkAnswer(userAnswer) {
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").innerText = "Correct!";
+            } else {
+                document.getElementById("result").innerText = 
+                    "Wrong! Correct answer is " + correctAnswer;
+            }
+            setTimeout(generateQuestion, 1500);
+        }
+        
+        generateQuestion();
+    </script>
 </body>
 </html>
